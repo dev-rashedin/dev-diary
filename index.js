@@ -427,18 +427,15 @@ run().catch(console.dir);
 
 app.post('/jwt', authHandler)
 
-app.post('/jwt', async (req, res) => {
-  const user = req.body;
-  const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '7d',
-  });
 
-  res.send({ token });
-});
 
 // middlewares
 
 // verify admin middleware
+app.use(verifyAdmin);
+
+// verify token middleware
+app.use(verifyToken);
 
 // Home route
 app.get('/', (req, res) => {
