@@ -435,11 +435,9 @@ app.post('/jwt', async (req, res) => {
 
 // verify admin middleware
 
-
+// Home route
 app.get('/', (req, res) => {
   res.status(StatusCodes.OK).send('learnjapanese server is running');
 });
 
-app.listen(port, () => {
-  console.log(`learnjapanese server is running on port ${port}`);
-});
+export default app;
