@@ -440,4 +440,17 @@ app.get('/', (req, res) => {
   res.status(StatusCodes.OK).send('learnjapanese server is running');
 });
 
+// Not found route
+app.get('*', (req, res) => {
+  res.status(StatusCodes.NOT_FOUND).send({ message: 'route not found' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong');
+});
+
+
+
 export default app;
