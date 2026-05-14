@@ -1,9 +1,12 @@
+import { globalErrorHandler, notFoundHandler } from 'express-error-toolkit';
+import authHandler from './src/auth';
+
 require('dotenv').config();
 const express = require('express');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
+
 const port = process.env.PORT || 5000;
 const nodemailer = require('nodemailer');
 const OpenAI = require('openai');
@@ -422,6 +425,8 @@ async function run() {
 }
 run().catch(console.dir);
 
+app.post('/jwt', authHandler)
+
 app.post('/jwt', async (req, res) => {
   const user = req.body;
   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
@@ -441,15 +446,10 @@ app.get('/', (req, res) => {
 });
 
 // Not found route
-app.get('*', (req, res) => {
-  res.status(StatusCodes.NOT_FOUND).send({ message: 'route not found' });
-});
+notFoundHandler();
 
 // Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something went wrong');
-});
+globalErrorHandler()
 
 
 
